@@ -7,7 +7,6 @@
   <title>Coffeebites | Gomitas de Café</title>
 
   <style>
-
     *{
       margin:0;
       padding:0;
@@ -19,6 +18,37 @@
       background:#f6efe7;
       color:#2e1b12;
     }
+
+    /* Botones Flotantes */
+    .floating-buttons {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10000;
+    }
+
+    .btn-float {
+      padding: 15px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-whatsapp { background-color: #25d366; }
+    .btn-cart { background-color: #3b2418; }
+    .btn-float:hover { transform: scale(1.05); }
 
     .presentation-img{
       width: 160px;
@@ -85,7 +115,7 @@
       margin-bottom:35px;
     }
 
-    .btn{
+    .btn {
       display:inline-block;
       padding:15px 35px;
       background:#c48b5a;
@@ -94,6 +124,9 @@
       border-radius:40px;
       font-weight:bold;
       transition:0.3s;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
     }
 
     .btn:hover{
@@ -134,7 +167,6 @@
       grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
       gap:35px;
     }
-
     
     .card{
       background:white;
@@ -167,6 +199,7 @@
 
     .card-content p{
       line-height:1.6;
+      margin-bottom: 15px;
     }
 
     .presentation{
@@ -236,41 +269,269 @@
       margin-top:40px;
     }
 
-    @media(max-width:768px){
+    /* --- SISTEMA DE COMPRA INTERACTIVA DE GOMITAS --- */
+    .hidden { display: none !important; }
 
-      .hero-content h1{
-        font-size:45px;
-      }
-
-      .hero-content p{
-        font-size:20px;
-      }
-
-      .about{
-        grid-template-columns:1fr;
-      }
-
-      header{
-        flex-direction:column;
-      }
-
-      nav{
-        margin-top:15px;
-      }
-
+    .seccion-tienda {
+      background: #fdfaf6;
+      border-radius: 30px;
+      margin-top: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid #ebdcd0;
     }
 
+    .sub-tienda-menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .btn-categoria {
+      background: #e6ded4;
+      color: #3b2418;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-categoria.activo, .btn-categoria:hover {
+      background: #3b2418;
+      color: white;
+    }
+
+    .grid-productos-tienda {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      width: 100%;
+    }
+
+    .producto-tienda-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border: 1px solid #f0e6df;
+    }
+
+    .producto-tienda-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .producto-tienda-card h4 {
+      font-size: 20px;
+      color: #3b2418;
+      margin-bottom: 8px;
+    }
+
+    .producto-tienda-card .precio {
+      font-size: 22px;
+      font-weight: bold;
+      color: #c48b5a;
+      margin: 10px 0;
+    }
+
+    .btn-agregar {
+      background: #c48b5a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    .btn-agregar:hover { background: #3b2418; }
+
+    /* Estilos del Carrito Coffeebites */
+    .carrito-page {
+      display: block;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: #3b2418;
+      color: white;
+      border-radius: 25px;
+      box-sizing: border-box;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .carrito-page h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .seccion-instrucciones {
+      display: block;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      text-align: left;
+      font-size: 0.95rem;
+      border-left: 4px solid #c48b5a;
+      box-sizing: border-box;
+      line-height: 1.5;
+    }
+
+    .seccion-instrucciones h4 {
+      margin: 0 0 8px 0;
+      color: #d8a46d;
+      font-size: 1.05rem;
+    }
+
+    .seccion-instrucciones ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #ddd;
+    }
+
+    .bloque-formulario {
+      width: 100%;
+      display: block;
+      margin-bottom: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    .label-formulario {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      color: #d8a46d;
+      font-weight: bold;
+      border-bottom: 2px solid rgba(216, 164, 109, 0.3);
+      padding-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .carrito-page input, .carrito-page select, .carrito-page textarea {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: #ffffff;
+      color: #222;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .label-sub {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      font-weight: bold;
+    }
+
+    .contenedor-opciones-pago {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    .btn-opcion-pago {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .btn-opcion-pago.seleccionado {
+      background: #c48b5a;
+      border-color: #d8a46d;
+      box-shadow: 0 0 15px rgba(196, 139, 90, 0.5);
+    }
+
+    .bloque-pago-dinamico {
+      display: block;
+      width: 100%;
+      background-color: #ffffff;
+      color: #222;
+      padding: 20px;
+      border-radius: 14px;
+      margin-top: 15px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .bloque-pago-dinamico img {
+      width: 190px;
+      height: 190px;
+      object-fit: contain;
+      margin-top: 12px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+    }
+
+    .alerta-banco {
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      border-left: 5px solid #ff9800;
+    }
+
+    .carrito-item-contenedor {
+      background: #fff;
+      color: #111;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    button.eliminar { background-color: #e74c3c; color: white; width: 100%; border: none; padding: 8px; margin-top: 8px; border-radius: 6px; cursor: pointer; font-weight: bold;}
+    button.vaciar { background-color: #ff9800; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+    button.pagar { background: linear-gradient(135deg, #a0693b, #c48b5a); color: white; width: 100%; font-size: 1.2rem; padding: 16px; font-weight: bold; border: none; margin-top: 25px; border-radius: 10px; cursor: pointer;}
+    .back-button { background-color: #555; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin: 20px auto 0 auto; display: block; cursor: pointer; }
+
+    @media(max-width:768px){
+      .hero-content h1{ font-size:45px; }
+      .hero-content p{ font-size:20px; }
+      .about{ grid-template-columns:1fr; }
+      header{ flex-direction:column; }
+      nav{ margin-top:15px; }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
-
   <header>
-
     <div class="logo">☕ Coffeebites</div>
-
     <nav>
       <a href="#inicio">Inicio</a>
       <a href="#nosotros">Nosotros</a>
@@ -278,250 +539,487 @@
       <a href="#presentacion">Presentaciones</a>
       <a href="#contacto">Contacto</a>
     </nav>
-
   </header>
 
-  <!-- HERO -->
-
   <section class="hero" id="inicio">
-
     <div class="hero-content">
-
       <h1>Coffeebites</h1>
-
-      <p>
-        Tu café en cada mordida
-      </p>
-
-      <a href="#productos" class="btn">
-        Descubrir Productos
-      </a>
-
+      <p>Tu café en cada mordida</p>
+      <button class="btn" onclick="abrirCatalogoTienda()">Descubrir Productos</button>
     </div>
-
   </section>
 
-  <!-- NOSOTROS -->
-
   <section id="nosotros">
-
     <h2 class="title">Sobre Coffeebites</h2>
-
     <div class="about">
-
       <img src="sobre.png">
-
       <div class="about-text">
-
         <p>
           Coffeebites transforma el auténtico sabor del café en deliciosas gomitas energéticas.
           Diseñadas para estudiantes, profesionales y amantes del café, nuestras gomitas ofrecen
           practicidad, sabor intenso y una experiencia innovadora.
         </p>
-
         <br>
-
         <p>
           Disponibles en presentaciones modernas tipo bolsa y pote, perfectas para llevar a cualquier lugar.
         </p>
-
       </div>
-
     </div>
-
   </section>
-
-  <!-- PRODUCTOS -->
 
   <section id="productos">
-
     <h2 class="title">Nuestras Gomitas</h2>
-
     <div class="products">
-
       <div class="card">
-
         <img src="classic.jpeg">
-
         <div class="card-content">
-
           <h3>Classic Coffee</h3>
-
-          <p>
-            Gomitas suaves con intenso sabor a café tostado premium.
-          </p>
-
+          <p>Gomitas suaves con intenso sabor a café tostado premium.</p>
         </div>
-
       </div>
 
       <div class="card">
-
         <img src="capuchino.jpeg">
-
         <div class="card-content">
-
           <h3>Capuchino</h3>
-
-          <p>
-            Deliciosa mezcla de café y chocolate para una experiencia irresistible.
-          </p>
-
+          <p>Deliciosa mezcla de café y chocolate para una experiencia irresistible.</p>
         </div>
-
       </div>
 
       <div class="card">
-
         <img src="expresso.jpeg">
-
         <div class="card-content">
-
           <h3>Espresso Energy</h3>
-
-          <p>
-            Máxima energía y concentración en pequeñas gomitas de espresso.
-          </p>
-
+          <p>Máxima energía y concentración en pequeñas gomitas de espresso.</p>
         </div>
-
       </div>
-
     </div>
-
   </section>
 
-
-<!-- PRESENTACIONES -->
-
-<section id="presentacion">
-
-  <div class="presentation">
-
-    <h2 class="title" style="color:white;">
-      Presentaciones
-    </h2>
-
-    <div class="presentation-container">
-
-      <!-- BOLSA -->
-
-      <div class="presentation-box">
-
-        <img class="presentation-img" src="bolsa.jpeg">
-
-        <h3>🛍 Bolsa Stand-Up</h3>
-
-        <p>
-          Empaque práctico y moderno, ideal para llevar en mochila o cartera.
-        </p>
-
+  <section id="presentacion">
+    <div class="presentation">
+      <h2 class="title" style="color:white;">Presentaciones</h2>
+      <div class="presentation-container">
+        <div class="presentation-box">
+          <img class="presentation-img" src="bolsa.jpeg">
+          <h3>🛍 Bolsa Stand-Up</h3>
+          <p>Empaque práctico y moderno, ideal para llevar en mochila o cartera.</p>
+        </div>
+        <div class="presentation-box">
+          <img class="presentation-img" src="pote.jpeg">
+          <h3>🥤 Pote Premium</h3>
+          <p>Presentación elegante y reutilizable para conservar mejor el producto.</p>
+        </div>
+        <div class="presentation-box">
+          <img class="presentation-img" src="regalo.jpeg">
+          <h3>🎁 Edición Regalo</h3>
+          <p>Packaging especial perfecto para obsequios y amantes del café.</p>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <!-- POTE -->
-
-      <div class="presentation-box">
-
-        <img class="presentation-img" src="pote.jpeg">
-
-        <h3>🥤 Pote Premium</h3>
-
-        <p>
-          Presentación elegante y reutilizable para conservar mejor el producto.
-        </p>
-
+  <section>
+    <h2 class="title">¿Por qué elegir Coffeebites?</h2>
+    <div class="benefits">
+      <div class="benefit-box">
+        <h3>⚡ Energía Instantánea</h3>
+        <p>Perfectas para estudiar, trabajar o mantenerse activo durante el día.</p>
       </div>
-
-      <!-- REGALO -->
-
-      <div class="presentation-box">
-
-        <img class="presentation-img" src="regalo.jpeg">
-
-        <h3>🎁 Edición Regalo</h3>
-
-        <p>
-          Packaging especial perfecto para obsequios y amantes del café.
-        </p>
-
+      <div class="benefit-box">
+        <h3>☕ Sabor Premium</h3>
+        <p>Elaboradas con auténtico sabor a café para una experiencia única.</p>
       </div>
-
+      <div class="benefit-box">
+        <h3>🎒 Fácil de Llevar</h3>
+        <p>Su presentación portátil permite disfrutar en cualquier momento.</p>
+      </div>
     </div>
-
-  </div>
-
-</section>
-
-
-<!-- BENEFICIOS -->
-
-<section>
-
-  <h2 class="title">¿Por qué elegir Coffeebites?</h2>
-
-  <div class="benefits">
-
-    <div class="benefit-box">
-
-      <h3>⚡ Energía Instantánea</h3>
-
-      <p>
-        Perfectas para estudiar, trabajar o mantenerse activo durante el día.
-      </p>
-
-    </div>
-
-    <div class="benefit-box">
-
-      <h3>☕ Sabor Premium</h3>
-
-      <p>
-        Elaboradas con auténtico sabor a café para una experiencia única.
-      </p>
-
-    </div>
-
-    <div class="benefit-box">
-
-      <h3>🎒 Fácil de Llevar</h3>
-
-      <p>
-        Su presentación portátil permite disfrutar en cualquier momento.
-      </p>
-
-    </div>
-
-  </div>
-
-</section>
-
-  <!-- CONTACTO -->
+  </section>
 
   <section id="contacto">
-
     <div class="contact">
-
       <h2>Contáctanos</h2>
-
       <br>
-
       <p>📧 coffeebites@gmail.com</p>
       <p>📱 +51 999 999 999</p>
       <p>📷 Instagram: @coffeebites</p>
-
       <br>
+      <button class="btn" onclick="abrirCatalogoTienda()">Comprar Ahora</button>
+    </div>
+  </section>
 
-      <a href="#" class="btn">
-        Comprar Ahora
-      </a>
 
+  <section id="seccionTienda" class="seccion-tienda hidden">
+    <h2 class="title">🛒 Compra Directa de Gomitas</h2>
+    
+    <div class="sub-tienda-menu">
+      <button class="btn-categoria activo" id="cat-todos" onclick="filtrarCategoria('todos')">Ver Todo</button>
+      <button class="btn-categoria" id="cat-bolsa" onclick="filtrarCategoria('Bolsa')">Bolsas Stand-Up</button>
+      <button class="btn-categoria" id="cat-pote" onclick="filtrarCategoria('Pote')">Potes Premium</button>
+      <button class="btn-categoria" id="cat-regalo" onclick="filtrarCategoria('Regalo')">Ediciones Regalo</button>
     </div>
 
+    <div id="gridProductos" class="grid-productos-tienda"></div>
   </section>
+
+  <div id="carritoPage" class="carrito-page hidden">
+    <h2>🛒 Tu Pedido de Coffeebites</h2>
+
+    <div class="seccion-instrucciones">
+      <h4>¿Cómo finalizar tu compra?</h4>
+      <ol>
+        <li>Completa tus datos obligatorios de envío.</li>
+        <li>Selecciona si prefieres reparto a domicilio o retirar en agencia.</li>
+        <li>Escoge tu método de pago para ver las instrucciones.</li>
+        <li>Haz clic en el botón inferior para procesarlo por WhatsApp y Sheets.</li>
+      </ol>
+    </div>
+
+    <div class="bloque-formulario">
+      <div class="label-formulario">Paso 1: Datos de Entrega</div>
+      <input id="nombreCliente" placeholder="Nombre completo *">
+      <input id="telefonoCliente" placeholder="Teléfono / WhatsApp *">
+      <input id="departamentoCliente" placeholder="Departamento * (Ej: Piura, Lima)">
+      <input id="provinciaCliente" placeholder="Provincia * (Ej: Piura, Sullana)">
+      <input id="distritoCliente" placeholder="Distrito * (Ej: Tambogrande, Catacaos)">
+      <input id="direccionCliente" placeholder="Dirección exacta * (Av, Calle, Nro, Dpto)">
+      <input id="referenciaCliente" placeholder="Referencia de la vivienda (Ej: Frente a parque)">
+      
+      <div class="label-sub">Método de entrega:</div>
+      <select id="entregaCliente" onchange="controlarVisualizacionAgencia()">
+        <option value="Envío a domicilio">🚚 Envío a domicilio</option>
+        <option value="Recojo en Agencia">🏪 Recojo en Agencia</option>
+      </select>
+
+      <div id="contenedorAgencia" style="display: none; width: 100%;">
+        <input id="agenciaCliente" placeholder="¿En qué agencia deseas retirar? * (Ej: Shalom, Olva)">
+      </div>
+
+      <textarea id="notesCliente" placeholder="Notas o indicaciones adicionales del pedido"></textarea>
+    </div>
+
+    <div class="bloque-formulario">
+      <div class="label-formulario">Paso 2: Medio de Pago</div>
+      <div class="contenedor-opciones-pago">
+        <button type="button" class="btn-opcion-pago" id="btnPagoQR" onclick="seleccionarMedioPago('Yape / Plin')">
+          📱 Yape / Plin
+        </button>
+        <button type="button" class="btn-opcion-pago" id="btnPagoBanco" onclick="seleccionarMedioPago('Transferencia Bancaria')">
+          🏦 Transferencia
+        </button>
+      </div>
+
+      <div id="seccionQR" class="bloque-pago-dinamico" style="display: none;">
+        <p style="margin:0 0 8px 0; font-weight:bold; color:#111; font-size: 1.05rem;">Escanea para pagar tus Coffeebites:</p>
+        <img src="QR.jpeg" alt="QR Coffeebites">
+        <p style="font-size:0.85rem; color:#555; margin-top:10px; font-style:italic; line-height: 1.4;">
+          No olvides guardar tu captura de pantalla tras pagar para enviarla por WhatsApp.
+        </p>
+      </div>
+
+      <div id="seccionBanco" class="bloque-pago-dinamico alerta-banco" style="display: none;">
+        <b style="color: #3b2418; font-size: 1.05rem;">📌 Cuentas de Transferencia:</b><br>
+        <p style="font-size:0.95rem; color:#333; margin: 6px 0 0 0;">
+          Al presionar el botón de abajo, enviaremos tus datos y te facilitaremos las cuentas interbancarias para efectuar el abono.
+        </p>
+      </div>
+    </div>
+
+    <div id="carritoItems" style="width: 100%; margin-top: 15px;"></div>
+    
+    <button class="vaciar" id="btnVaciar" onclick="vaciarCarrito()">🗑️ Vaciar Carrito</button>
+    
+    <h3 id="totalCarrito" style="font-size: 1.6rem; margin: 10px 0;">Total: S/0.00</h3>
+
+    <button class="pagar" onclick="enviarPedidoWhatsApp()">👉 Confirmar Pedido y Finalizar</button>
+    <button class="back-button" onclick="cerrarCarrito()">← Volver al catálogo</button>
+  </div>
+
 
   <footer>
     © 2026 Coffeebites | Gomitas de Café Premium
   </footer>
+
+  <div class="floating-buttons">
+    <button class="btn-float btn-cart" onclick="mostrarCarritoTienda()">🛒 Carrito (<span id="cart-count">0</span>)</button>
+    <a href="https://wa.me/51999999999" class="btn-float btn-whatsapp" target="_blank">💬 WhatsApp</a>
+  </div>
+
+
+  <script>
+    // Base de datos enfocada exclusivamente en los sabores e imágenes de tus gomitas
+    const baseProductos = [
+      { id: 1, nombre: "Gomitas Classic Coffee (Bolsa)", precio: 15.00, tipo: "Bolsa", img: "classic.jpeg" },
+      { id: 2, nombre: "Gomitas Capuchino (Bolsa)", precio: 16.50, tipo: "Bolsa", img: "capuchino.jpeg" },
+      { id: 3, nombre: "Gomitas Espresso Energy (Bolsa)", precio: 18.00, tipo: "Bolsa", img: "expresso.jpeg" },
+      { id: 4, nombre: "Gomitas Classic Coffee (Pote)", precio: 26.00, tipo: "Pote", img: "classic.jpeg" },
+      { id: 5, nombre: "Gomitas Capuchino (Pote)", precio: 28.00, tipo: "Pote", img: "capuchino.jpeg" },
+      { id: 6, nombre: "Gomitas Espresso Energy (Pote)", precio: 30.00, tipo: "Pote", img: "expresso.jpeg" },
+      { id: 7, nombre: "Edición Especial Regalo (Mix Gomitas)", precio: 40.00, tipo: "Regalo", img: "regalo.jpeg" }
+    ];
+
+    const seccionTienda = document.getElementById("seccionTienda");
+    const gridProductos = document.getElementById("gridProductos");
+    const carritoPage = document.getElementById("carritoPage");
+    const totalCarrito = document.getElementById("totalCarrito");
+
+    const nombreCliente = document.getElementById("nombreCliente");
+    const telefonoCliente = document.getElementById("telefonoCliente");
+    const departamentoCliente = document.getElementById("departamentoCliente");
+    const provinciaCliente = document.getElementById("provinciaCliente");
+    const distritoCliente = document.getElementById("distritoCliente");
+    const direccionCliente = document.getElementById("direccionCliente");
+    const referenciaCliente = document.getElementById("referenciaCliente");
+    const entregaCliente = document.getElementById("entregaCliente");
+    const agenciaCliente = document.getElementById("agenciaCliente");
+    const contenedorAgencia = document.getElementById("contenedorAgencia");
+    const notesCliente = document.getElementById("notesCliente");
+
+    let medioPagoSeleccionado = ""; 
+    const btnPagoQR = document.getElementById("btnPagoQR");
+    const btnPagoBanco = document.getElementById("btnPagoBanco");
+    const seccionQR = document.getElementById("seccionQR");
+    const seccionBanco = document.getElementById("seccionBanco");
+
+    function renderizarProductos(lista) {
+      gridProductos.innerHTML = "";
+      lista.forEach(p => {
+        gridProductos.innerHTML += `
+          <div class="producto-tienda-card">
+            <img src="${p.img}" alt="${p.nombre}">
+            <h4>${p.nombre}</h4>
+            <p class="precio">S/${p.precio.toFixed(2)}</p>
+            <button class="btn-agregar" onclick="agregarAlCarrito('${p.nombre}', ${p.precio})">Agregar al Carrito</button>
+          </div>
+        `;
+      });
+    }
+
+    function filtrarCategoria(cat) {
+      document.querySelectorAll('.btn-categoria').forEach(b => b.classList.remove('activo'));
+      if(cat === 'todos') {
+        document.getElementById('cat-todos').classList.add('activo');
+        renderizarProductos(baseProductos);
+      } else {
+        document.getElementById('cat-' + cat.toLowerCase()).classList.add('activo');
+        const filtrados = baseProductos.filter(p => p.tipo === cat);
+        renderizarProductos(filtrados);
+      }
+    }
+
+    function abrirCatalogoTienda() {
+      seccionTienda.classList.remove("hidden");
+      carritoPage.classList.add("hidden");
+      renderizarProductos(baseProductos);
+      seccionTienda.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function actualizarContadorFlotante(){
+      const cart = JSON.parse(localStorage.getItem("carrito_bites")) || [];
+      document.getElementById("cart-count").textContent = cart.length;
+    }
+
+    function agregarAlCarrito(nombre, precio){
+      const cart = JSON.parse(localStorage.getItem("carrito_bites")) || [];
+      cart.push({nombre, precio});
+      localStorage.setItem("carrito_bites", JSON.stringify(cart));
+      actualizarContadorFlotante();
+      alert("¡" + nombre + " agregado al carrito!");
+    }
+
+    function mostrarCarritoTienda(){
+      seccionTienda.classList.add("hidden");
+      carritoPage.classList.remove("hidden");
+      actualizarCarritoItems();
+      
+      medioPagoSeleccionado = "";
+      btnPagoQR.classList.remove("seleccionado");
+      btnPagoBanco.classList.remove("seleccionado");
+      seccionQR.style.display = "none";
+      seccionBanco.style.display = "none";
+      agenciaCliente.value = "";
+      entregaCliente.value = "Envío a domicilio";
+      contenedorAgencia.style.display = "none";
+
+      carritoPage.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cerrarCarrito() {
+      carritoPage.classList.add("hidden");
+      seccionTienda.classList.remove("hidden");
+    }
+
+    function controlarVisualizacionAgencia() {
+      if (entregaCliente.value === "Recojo en Agencia") {
+        contenedorAgencia.style.display = "block";
+      } else {
+        contenedorAgencia.style.display = "none";
+        agenciaCliente.value = "";
+      }
+    }
+
+    function seleccionarMedioPago(metodo) {
+      medioPagoSeleccionado = metodo;
+      if (metodo === "Yape / Plin") {
+        btnPagoQR.classList.add("seleccionado");
+        btnPagoBanco.classList.remove("seleccionado");
+        seccionQR.style.display = "block";
+        seccionBanco.style.display = "none";
+      } else if (metodo === "Transferencia Bancaria") {
+        btnPagoBanco.classList.add("seleccionado");
+        btnPagoQR.classList.remove("seleccionado");
+        seccionQR.style.display = "none";
+        seccionBanco.style.display = "block";
+      }
+    }
+
+    function actualizarCarritoItems(){
+      const cart = JSON.parse(localStorage.getItem("carrito_bites")) || [];
+      const cont = document.getElementById("carritoItems");
+      const btnVaciar = document.getElementById("btnVaciar");
+      cont.innerHTML = "";
+      let total = 0;
+
+      if(cart.length === 0){
+        cont.innerHTML = "<p style='color:#ccc; padding:15px;'>Tu carrito está vacío.</p>";
+        btnVaciar.style.display = "none";
+        totalCarrito.textContent = "Total: S/0.00";
+        return;
+      }
+
+      btnVaciar.style.display = "inline-block";
+      cart.forEach((p, i)=>{
+        total += p.precio;
+        cont.innerHTML += `
+          <div class="carrito-item-contenedor">
+            <p style="margin:0; font-size:1.05rem; color:#111;"><b>${p.nombre}</b></p>
+            <p style="margin:4px 0 0 0; color:#c48b5a; font-weight:bold;">S/${p.precio.toFixed(2)}</p>
+            <button class="eliminar" onclick="eliminarProducto(${i})">Eliminar producto</button>
+          </div>`;
+      });
+
+      totalCarrito.textContent = "Total: S/" + total.toFixed(2);
+    }
+
+    function eliminarProducto(i){
+      const cart = JSON.parse(localStorage.getItem("carrito_bites")) || [];
+      cart.splice(i, 1);
+      localStorage.setItem("carrito_bites", JSON.stringify(cart));
+      actualizarContadorFlotante();
+      actualizarCarritoItems();
+    }
+
+    function vaciarCarrito(){
+      if(confirm("¿Seguro que deseas vaciar tu carrito?")){
+        localStorage.removeItem("carrito_bites");
+        actualizarContadorFlotante();
+        actualizarCarritoItems();
+      }
+    }
+
+    function enviarPedidoWhatsApp(){
+      const nombre = nombreCliente.value.trim();
+      const telefono = telefonoCliente.value.trim();
+      const departamento = departamentoCliente.value.trim();
+      const provincia = provinciaCliente.value.trim();
+      const distrito = distritoCliente.value.trim();
+      const direccion = direccionCliente.value.trim();
+      const referencia = referenciaCliente.value.trim() || "Ninguna";
+      const entrega = entregaCliente.value;
+      const agencia = agenciaCliente.value.trim();
+      const notas = notesCliente.value.trim() || "Ninguna";
+      const cart = JSON.parse(localStorage.getItem("carrito_bites")) || [];
+
+      if(!nombre || !telefono || !departamento || !provincia || !distrito || !direccion || cart.length === 0){
+        alert("Por favor complete los campos obligatorios (*) y añada productos.");
+        return;
+      }
+
+      if(entrega === "Recojo en Agencia" && !agencia){
+        alert("Por favor indique la Agencia de transporte seleccionada.");
+        return;
+      }
+      
+      if(!medioPagoSeleccionado){
+        alert("Por favor, elija un método de pago antes de continuar.");
+        return;
+      }
+
+      let resumenProductos = "";
+      let total = 0;
+      cart.forEach((p) => {
+        resumenProductos += p.nombre + "; ";
+        total += p.precio;
+      });
+
+      // ENLACE CON GOOGLE SHEETS
+      const URL_MI_SHEETS = "TU_URL_DE_APPS_SCRIPT";
+      
+      const textoMetodoDetallado = entrega === "Recojo en Agencia" ? entrega + " (Agencia: " + agencia + ")" : entrega;
+      const notasConPago = "[Pago: " + medioPagoSeleccionado + "] [Entrega: " + textoMetodoDetallado + "] - " + notas;
+
+      const objetoDatos = {
+        nombre: nombre,
+        telefono: telefono,
+        departamento: departamento,
+        provincia: provincia,
+        distrito: distrito,
+        direccion: direccion,
+        referencia: referencia,
+        entrega: textoMetodoDetallado,
+        notes: notasConPago,
+        productos: resumenProductos,
+        total: "S/ " + total.toFixed(2)
+      };
+
+      fetch(URL_MI_SHEETS, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(objetoDatos)
+      }).catch(err => console.log("Error de sincronización con Sheets: ", err));
+
+      // CONSTRUCCIÓN DEL MENSAJE DE WHATSAPP
+      let msg = "☕ *NUEVO PEDIDO DE GOMITAS - COFFEEBITES* ☕%0A%0A";
+      msg += "👤 *Cliente:* " + nombre + "%0A";
+      msg += "📞 *Teléfono:* " + telefono + "%0A";
+      
+      if(entrega === "Recojo en Agencia"){
+        msg += "🏪 *Entrega:* " + entrega + " (" + agencia + ")%0A";
+      } else {
+        msg += "🚚 *Entrega:* " + entrega + "%0A";
+      }
+      
+      msg += "📍 *Ubicación:* " + departamento + " / " + provincia + " / " + distrito + "%0A";
+      msg += "🏠 *Dirección:* " + direccion + "%0A";
+      if(referencia !== "Ninguna") msg += "🗺️ *Referencia:* " + referencia + "%0A";
+      msg += "💳 *Medio de Pago:* " + medioPagoSeleccionado + "%0A";
+      if(notas !== "Ninguna") msg += "📝 *Notas:* " + notas + "%0A";
+      msg += "%0A🛒 *Detalle de Compra:*%0A";
+
+      cart.forEach((p, i) => {
+        msg += (i + 1) + ". " + p.nombre + " - S/" + p.precio.toFixed(2) + "%0A";
+      });
+
+      msg += "%0A💰 *Total a pagar:* S/" + total.toFixed(2) + "%0A%0A";
+
+      if(medioPagoSeleccionado === "Yape / Plin") {
+        msg += "📸 *[COMPROBANTE]*%0A";
+        msg += "Adjunto debajo la captura de pantalla de mi Yape/Plin para confirmar la operación. 👇✨";
+      } else {
+        msg += "🏦 *[SOLICITUD DE TRANSFERENCIA]*%0A";
+        msg += "Quedo atento a que me faciliten los números de cuenta oficiales para ejecutar la transferencia.";
+      }
+
+      localStorage.removeItem("carrito_bites");
+      actualizarContadorFlotante();
+
+      window.open("https://wa.me/51999999999?text=" + msg, "_blank");
+    }
+
+    actualizarContadorFlotante();
+  </script>
 
 </body>
 </html>
